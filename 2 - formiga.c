@@ -50,11 +50,12 @@ int main(){
     pos = 0;
     processamento(&g, vet, pos);
 
-    for(int i=0;i<31;i++){
+    // O bloco omentaod a seguir mostra as ligações do grafo, no formato {estadoorigem}->{estadodestino} para cada estado possível do grafo
+   /*  for(int i=0;i<31;i++){
         printState(g->states[i]); printf(" -> "); printState(g->states[g->adjacencias[i]]); printf("\n");
-    }
+    } */
 
-    printf("Digite o estado inicial do Tubo (4 formigas) >> ");scanf("%d %d %d %d",vet,vet+1,vet+2,vet+3);
+    printf("Digite o estado inicial do Tubo (4 formigas) >> "); scanf("%d %d %d %d",vet,vet+1,vet+2,vet+3);
 
     buscaSolucao(g, vet);
  
@@ -74,6 +75,7 @@ void printState(int* vet){
         printf("%d ",vet[i]);
     printf("}");
 }
+
 void processamento(grafo** g , int* vet, int pos){
     int tam = 0;
     while(tam !=4 && vet[tam]!=0)
@@ -125,7 +127,7 @@ void processamento(grafo** g , int* vet, int pos){
     //Caso haja inversão ou não
     //printState(vetAux);
     //printf("%d",buscaEstado(g,vetAux));
-    if (flagrealoc){
+    if (flagrealoc){  //Realocação das posições do vetor para que os zeros estejam sempre ao final
         for(int i=1;i<4;i++){
             vetAux[i-1] = vetAux[i];
         } 

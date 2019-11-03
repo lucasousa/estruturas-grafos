@@ -13,6 +13,9 @@ typedef struct l{
 
 int flag = 0;
 int maiorCidades = 0;
+float dinheirorestante = 0;
+int caminhos = 0;
+int caminhoatual = 0;
 lista* quantidade_de_cidades = NULL;
 
 void printMatrix(grafo* g);
@@ -58,7 +61,9 @@ int main(){
     printf("Quanto você tem para gastar? >> "); scanf("%f", &dinheiro);
     flag = 1;
     deepSearch(g, l, partida, dinheiro);
-    printList(quantidade_de_cidades);
+    printf("\n\nMáximo de Cidades que é possível percorrer no melhor caminho: %d\n",maiorCidades);
+    printf("Dinheiro restante no melhor caminho: %.2f\n",dinheirorestante);
+    printf("O mehor caminho foi o caminho de número: %d\n", caminhoatual);
 
 
 }
@@ -81,26 +86,36 @@ int canGo(grafo *g, lista* visitados, int cidade ,float dinheiro){
                     return 1;
     }
     return 0;
-
 }
 
 void deepSearch(grafo *g,lista* visitados, int partida, float dinheiro){
     addList(&visitados, partida);
-    if(!canGo(g, visitados, partida, dinheiro))
+    if(!canGo(g, visitados, partida, dinheiro)){
+        caminhos++;
+        int cidades = len(visitados)-1;
+        if(cidades > maiorCidades){
+            maiorCidades = cidades;         // Guarda quantas cidades o melhor caminho possui, de acordo com os critérios requeridos
+            dinheirorestante = dinheiro;    // Dinheiro restante do melhor caminho
+            caminhoatual = caminhos;        // Guarda em qual caminho foi encontrado o melhor(primeiro, segundo ...)        
+        }else if(maiorCidades == cidades  && dinheiro > dinheirorestante){ // mesma quantidade de cidades mas com mais dinheiro restante
+            dinheirorestante = dinheiro;    
+            caminhoatual = caminhos;
+        }
         addList(&quantidade_de_cidades, len(visitados)-1);
+    }
     for(int i = 0; i < g->nVertices; i++){
         if(!searchList(visitados, i+1))
             if(g->matriz[partida-1][i] != 0)
                 if(dinheiro>=g->matriz[partida-1][i]){
-                    printf("eu já visitei: ");printList(visitados);
-                    printf("Estou indo para o nó: %d, tenho %.2f reais",i+1,dinheiro); setbuf(stdin,NULL); getchar();
+                    //printf("eu já visitei: ");printList(visitados);
+                    //printf("Estou indo para o nó: %d, tenho %.2f reais",i+1,dinheiro); setbuf(stdin,NULL); getchar();
                     deepSearch(g, visitados, i+1, dinheiro-g->matriz[partida-1][i]);
                 }
     }
-    printf("Estou removendo: %d\n", partida);
+    //printf("Estou removendo: %d\n", partida);
     removeList(&visitados, partida);
-    printf("eu já visitei: ");printList(visitados);
-    printf("Voltei do nó: %d, tenho %.2f reais",partida, dinheiro); setbuf(stdin,NULL); getchar();
+    //printf("eu já visitei: ");printList(visitados);
+    //printf("Voltei do nó: %d, tenho %.2f reais",partida, dinheiro); setbuf(stdin,NULL); getchar();
 }
 
 void pop(lista **l){

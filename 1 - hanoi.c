@@ -68,7 +68,7 @@ int main(){
                     cont++;
                 }
 
-    for(int i=0;i<81;i++){
+    for(int i=0;i<81;i++){  //Criando as adjacências
         for(int j=i+1;j<81;j++){
             if(ehAdjacente(g->states[i],g->states[j])){
                 g = inserirAresta(g,i,j);
@@ -76,13 +76,16 @@ int main(){
         }
     }
 
+    //Setando os níveis para os nós
     lista *ff, *fp;
     ff=NULL;
     fp=NULL;
     addList(&fp, 0);
     g = atribuiNivel(g, 1, fp, ff);
 
-     for(int i=0;i<40;i++){
+
+    // O bloco comentado representa a mostragem dos estados acompanhados de suas respectivas adjacências, para visualizar basta descomentar
+    /*  for(int i=0;i<40;i++){
         printState(g->states[i]); printf(" %2d ",i);
         printf("linha %2d: ", i);
         for(int j=0;j<3;j++){
@@ -96,8 +99,8 @@ int main(){
         }
         printf("\n");
     }
-    printf("      \t");printState(g->states[80]);printf("\n"); 
-
+    printf("      \t");printState(g->states[80]);printf("\n");  */
+    // Fim do bloco de visualização
 
     int is[4];
     printf("Digite o estado inicial que a torre está:\n");
@@ -105,7 +108,7 @@ int main(){
     printf("o menor disco está na torre 1, o segundo menor está na torre 2,\n o terceiro na torre 2 e o maior disco na torre 1\n");
     scanf("%d %d %d %d", is, is+1, is+2, is+3);
     int isNumber = 3*3*3*(is[0]-1)+3*3*(is[1]-1)+3*(is[2]-1)+is[3]-1;
-    printf("Isnumber %d \n", isNumber);
+    //printf("Isnumber %d \n", isNumber);
     deepSearch(g, visitados, is, isNumber);
 
 
